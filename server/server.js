@@ -46,6 +46,25 @@ app.post('/newuser', function(req, res){
       res.status(200).send("Location changed succesfully");
     });
   });
+  
+  app.post('/changeinterests', function(req, res){
+    pool.getConnection(function(err, connection){
+      if(err){
+        res.status(500).send("Cannot currently access database. Try again in couple minutes");
+        return;
+      }
+      
+      var sql = "UPDATE users SET interests=" + connection.escape(req.body.interests) + " WHERE account =" + connection.escape(req.body.account);
+      connection.query(sql, function(err, results, fields) {
+        if(err){
+          res.status(500).send("Invalid database query. Check fields and try again.");
+          return;
+        }
+        connection.release();
+        res.status(200).send("Interests changed succesfully");
+      });
+    });
+  });
 
   app.post('/createEvent', function(req, res){
     pool.getConnection(function(err, connection) {
