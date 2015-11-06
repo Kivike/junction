@@ -17,9 +17,10 @@ app.post('/newuser', function(req, res){
       return;
     } 
 
-    var sql = "INSERT INTO users (account, location, interests) VALUES (" + connection.escape(req.body.account) + "," +
+    var sql = "INSERT INTO users (account, location, interests, range) VALUES (" + connection.escape(req.body.account) + "," +
                                                                             connection.escape(req.body.location) + "," +
-                                                                            connection.escape(req.body.interests) + ")";
+                                                                            connection.escape(req.body.interests) + "," +  
+                                                                            connection.escape(req.body.range) + ")";
     connection.query(sql, function(err, results, fields){
       if(err){
         res.status(500).send("Invalid database query. Check fields and try again.");
@@ -115,7 +116,7 @@ app.post('/newuser', function(req, res){
 
           for(var i = 0; i < results.length; i++){
             if(results[i].location * results[i].location + userlocation * userlocation < range * range){
-              possibleSports.push(reuslts[i]);
+              possibleSports.push(results[i]);
             }
           }
           connection.release();
