@@ -46,4 +46,24 @@ app.post('/newuser', function(req, res){
       res.status(200).send("Location changed succesfully");
     });
   });
+
+  app.post('/createEvent', function(req, res){
+    pool.getConnection(function(err, connection) {
+    if(err){
+      res.status(500).send("Cannot currently access database. Try again in couple minutes");
+      return;
+    } 
+
+    var sql = "INSERT INTO events (location, time, type) VALUES (" + connection.escape(req.body.location) + "," +
+                                                                    connection.escape(req.body.time) + "," + 
+                                                                    connection.escape(req.body.type) + ")";                                                                           connection.escape(req.body.interests) + ")";
+    connection.query(sql, function(err, results, fields){
+      if(err){
+        res.status(500).send("Invalid database query. Check fields and try again.");
+        return;
+      }
+      connection.release();
+      res.status(200).send("Event created succesfully!");
+    });
+  });
 });
