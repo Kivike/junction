@@ -1,6 +1,11 @@
 var express = require("express");
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
+var fs = require('fs');
+
+var app = express();
+app.use(bodyParser.urlencoded({extended: false }))
+app.use(bodyParser.json());
 
 var pool = mysql.createPool({
   connectionLimit: 50,
@@ -10,9 +15,9 @@ var pool = mysql.createPool({
   database:'junction',
 });
 
-var index = fs.readFileSync('website/index.html');
+var index = fs.readFileSync('open/index.html');
 
-app.use(express.static('website'));
+app.use(express.static('open'));
 
 app.get('/', function (req, res) {
   res.setHeader('Content-Type', 'text/plain');
@@ -134,8 +139,6 @@ app.get('/events', function(req, res){
       }
       
       var sports = results;
-
-      }
 
       var sql = "SELECT * FROM users WHERE account = " + connection.escape(req.body.account);
     
