@@ -10,6 +10,16 @@ var pool = mysql.createPool({
   database:'junction',
 });
 
+var index = fs.readFileSync('website/index.html');
+
+app.use(express.static('website'));
+
+app.get('/', function (req, res) {
+  res.setHeader('Content-Type', 'text/plain');
+  res.end(index);
+  return;
+});
+
 app.post('/newuser', function(req, res){
   pool.getConnection(function(err, connection) {
     if(err){
@@ -147,4 +157,13 @@ app.get('/events', function(req, res){
     });
     connection.release();
   });
+});
+
+var server = app.listen(8000, function () {
+
+  var host = server.address().address;
+  var port = server.address().port;
+
+  console.log('Application listening at http://%s:%s', host, port);
+
 });
