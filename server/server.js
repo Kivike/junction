@@ -85,4 +85,43 @@ app.post('/newuser', function(req, res){
       res.status(200).send("Event created succesfully!");
     });
   });
+
+  app.get('/events', function(req, res){
+    pool.getConnection(function(err, connection){
+      if(err){
+        res.status(500).send("Cannot currently access database. Try again in couple minutes");
+        return;
+      }
+      
+      connection.query("SELECT * FROM events", function(err, results, fields) {
+        if(err){
+          res.status(500).send("Invalid database query. Check fields and try again.");
+          return;
+        }
+        
+        var sports = results;
+
+        }
+
+        var sql = "SELECT * FROM users WHERE account = " + connection.escape(req.body.account);
+      
+        connection.query(sql, function(err, results, fields) {
+          if(err){
+            res.status(500).send("Invalid database query. Check fields and try again.");
+            return;
+          }
+          var userlocation = results[0].location;
+          var possibleSports = [];
+
+          for(var i = 0; i < results.length; i++){
+            if(results[i].location * results[i].location + userlocation * userlocation < range * range){
+              possibleSports.push(reuslts[i]);
+            }
+          }
+          connection.release();
+          res.status(200).send(possibleSports);
+        });
+      });
+    });
+  });
 });
