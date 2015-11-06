@@ -1,0 +1,15 @@
+{
+  "name": "pondhockey",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Peetu, Juuso, Roope, Joel, Lauri",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.12.4",
+    "express": "^4.12.3",
+    "mysql": "git://github.com/felixge/node-mysql"
+  }
+}
