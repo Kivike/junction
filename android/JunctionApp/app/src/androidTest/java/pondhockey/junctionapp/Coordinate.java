@@ -1,3 +1,7 @@
+package pondhockey.junctionapp;
+
+import java.text.DecimalFormat;
+
 public class Coordinate{
 
     float north;
