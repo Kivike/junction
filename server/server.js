@@ -113,8 +113,11 @@ app.post('/createEvent', function(req, res){
       return;
     } 
 
-    var sql = "INSERT INTO events (location, time, type) VALUES (" + connection.escape(req.body.location) + "," +
-                                                                    connection.escape(req.body.time) + "," + 
+    var sql = "INSERT INTO events (title, description, location, startingtime, endingtime, type) VALUES (" + connection.escape(req.body.title) + "," +
+                                                                    connection.escape(req.body.description) + "," + 
+                                                                    connection.escape(req.body.location) + "," +
+                                                                    connection.escape(req.body.startingtime) + "," +
+                                                                    connection.escape(req.body.endingtime) + "," + 
                                                                     connection.escape(req.body.type) + ")";                                                                           connection.escape(req.body.interests) + ")";
     connection.query(sql, function(err, results, fields){
       if(err){
