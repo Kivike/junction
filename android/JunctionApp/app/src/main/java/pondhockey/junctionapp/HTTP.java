@@ -128,8 +128,8 @@ public class HTTP{
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("title", title));
         nameValuePairs.add(new BasicNameValuePair("description", description));
-        nameValuePairs.add(new BasicNameValuePair("startingTime", startingTime.toPattern()));
-        nameValuePairs.add(new BasicNameValuePair("endingTime", endingTime.toPattern()));
+        nameValuePairs.add(new BasicNameValuePair("startingTime", startingTime.format(startingTime.getCalendar().getTime())));
+        nameValuePairs.add(new BasicNameValuePair("endingTime", endingTime.format(endingTime.getCalendar().getTime())));
         nameValuePairs.add(new BasicNameValuePair("location", location));
         nameValuePairs.add(new BasicNameValuePair("type", "" + type));
 
