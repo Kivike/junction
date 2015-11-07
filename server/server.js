@@ -151,10 +151,21 @@ app.get('/events', function(req, res){
           return;
         }
         var userlocation = results[0].location;
+
+        var userCoords = userlocation.location.split(" ");
+        var userLatitude = parseFloat(userCoords[0]);
+        var userLongitude = parseFloat(userCoords[1]);
+
+        var usertravelrange = parseFloat(results[0].travelrange);
         var possibleSports = [];
 
-        for(var i = 0; i < results.length; i++){
-          if(results[i].location * results[i].location + userlocation * userlocation < range * range){
+        for(var i = 0; i < sports.length; i++){
+
+          var sportsCoords = sports[i].location.split(" ");
+          var sportsLatitude = parseFloat(sportsCoords[0]);
+          var sportsLongitude = parseFloat(sportsCoords[1]);
+
+          if(coordinatesToDistance(userLatitude, userLongitude, sportsLatitude, sportsLongitude) < travelrange){
             possibleSports.push(results[i]);
           }
         }
@@ -164,6 +175,21 @@ app.get('/events', function(req, res){
     connection.release();
   });
 });
+
+function coordinatesToDistance(lat1, lon1, lat2, lon2){
+  var R = 6371000; // metres
+  var φ1 = lat1.toRadians();
+  var φ2 = lat2.toRadians();
+  var Δφ = (lat2-lat1).toRadians();
+  var Δλ = (lon2-lon1).toRadians();
+
+  var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+          Math.cos(φ1) * Math.cos(φ2) *
+          Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+  var d = R * c;
+}
 
 var server = app.listen(8000, function () {
 
