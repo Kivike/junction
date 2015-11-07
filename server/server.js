@@ -12,7 +12,7 @@ var pool = mysql.createPool({
   host:'localhost',
   user:'junction',
   password:'2015',
-  database:'junction',
+  database:'junction'
 });
 
 var index = fs.readFileSync('open/index.html');
@@ -29,6 +29,7 @@ app.post('/newuser', function(req, res){
   pool.getConnection(function(err, connection) {
     if(err){
       res.status(500).send("Cannot currently access database. Try again in couple minutes");
+	console.log("Error getting connection from pool " + err);
       return;
     } 
 
@@ -38,6 +39,7 @@ app.post('/newuser', function(req, res){
                                                                             connection.escape(req.body.travelrange) + ")";
     connection.query(sql, function(err, results, fields){
       if(err){
+	console.log("error with query " + err);
         res.status(500).send("Invalid database query. Check fields and try again.");
         return;
       }
@@ -128,6 +130,7 @@ app.post('/createEvent', function(req, res){
 app.get('/events', function(req, res){
   pool.getConnection(function(err, connection){
     if(err){
+	console.log(err);
       res.status(500).send("Cannot currently access database. Try again in couple minutes");
       return;
     }
