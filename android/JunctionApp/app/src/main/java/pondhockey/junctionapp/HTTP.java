@@ -51,30 +51,7 @@ public class HTTP{
             System.exit(0);
         }
 
-        try {
-            HttpResponse response = this.httpClient.execute(httpPost);
-
-            StatusLine statusLine = response.getStatusLine();
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-
-                response.getEntity().writeTo(out);
-                String responseString = out.toString();
-
-                out.close();
-
-                return responseString;
-
-            } else{
-                //Closes the connection
-                response.getEntity().getContent().close();
-                return statusLine.getReasonPhrase();
-            }
-        }catch(java.io.IOException e){
-            Log.w("Error", "Cannot write data: " + e);
-            System.exit(0);
-        }
-        return "Error";
+        return sendHttpCall(httpPost);
     }
 
     public String changeLocation(String account, Coordinate location){
@@ -92,30 +69,7 @@ public class HTTP{
             System.exit(0);
         }
 
-        try {
-            HttpResponse response = this.httpClient.execute(httpPost);
-
-            StatusLine statusLine = response.getStatusLine();
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-
-                response.getEntity().writeTo(out);
-                String responseString = out.toString();
-
-                out.close();
-
-                return responseString;
-
-            } else{
-                //Closes the connection
-                response.getEntity().getContent().close();
-                return statusLine.getReasonPhrase();
-            }
-        }catch(java.io.IOException e){
-            Log.w("Error", "Cannot write data: " + e);
-            System.exit(0);
-        }
-        return "Error";
+        return sendHttpCall(httpPost);
     }
 
     public String changeInterests(String account, int[] interests){
@@ -132,30 +86,7 @@ public class HTTP{
             System.exit(0);
         }
 
-        try {
-            HttpResponse response = this.httpClient.execute(httpPost);
-
-            StatusLine statusLine = response.getStatusLine();
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-
-                response.getEntity().writeTo(out);
-                String responseString = out.toString();
-
-                out.close();
-
-                return responseString;
-
-            } else{
-                //Closes the connection
-                response.getEntity().getContent().close();
-                return statusLine.getReasonPhrase();
-            }
-        }catch(java.io.IOException e){
-            Log.w("Error", "Cannot write data: " + e);
-            System.exit(0);
-        }
-        return "Error";
+        return sendHttpCall(httpPost);
     }
 
     public String changeTravelRange(String account, float range){
@@ -173,6 +104,10 @@ public class HTTP{
             System.exit(0);
         }
 
+        return sendHttpCall(httpPost);
+    }
+
+    private String sendHttpCall(HttpPost httpPost){
         try {
             HttpResponse response = this.httpClient.execute(httpPost);
 
