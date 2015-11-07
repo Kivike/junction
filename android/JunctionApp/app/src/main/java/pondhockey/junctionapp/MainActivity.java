@@ -3,8 +3,11 @@ package pondhockey.junctionapp;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -15,6 +18,31 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         //startActivity(new Intent(MainActivity.this, AddEventActivity.class));
+
+        Button globalCalBtn = (Button) findViewById(R.id.glocalButton);
+        globalCalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("A", "Glocal view");
+                startActivity(new Intent(MainActivity.this, Glocal.class));
+            }
+        });
+
+        Button ownCalBtn = (Button) findViewById(R.id.ownCalButton);
+        ownCalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, owncal.class));
+            }
+        });
+
+        Button settingsButton = (Button) findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            }
+        });
     }
 
     @Override

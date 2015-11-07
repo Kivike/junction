@@ -52,6 +52,19 @@
             android:name=".TimeSelectActivity"
             android:label="@string/title_activity_time_select" >
         </activity>
+        <activity
+            android:name=".Glocal"
+            android:label="Global calendar" >
+        </activity>
+        <activity
+            android:name=".owncal"
+            android:label="Own calendar" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings" >
+        </activity>
+
     </application>
 
 </manifest>

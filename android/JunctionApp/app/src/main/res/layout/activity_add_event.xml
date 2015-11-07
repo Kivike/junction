@@ -60,7 +60,8 @@
         android:id="@+id/startTimeButton"
         android:layout_below="@+id/descriptionTextBox"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:width="160dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -69,7 +70,8 @@
         android:id="@+id/endTimeButton"
         android:layout_below="@+id/startTimeText"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:width="160dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -93,8 +95,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:id="@+id/button4"
+        android:text="Back"
+        android:id="@+id/backButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

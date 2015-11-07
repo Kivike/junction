@@ -57,6 +57,14 @@ public class AddEventActivity extends AppCompatActivity {
             }
         });
 
+        Button backButton = (Button) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         Button createEventButton = (Button) findViewById(R.id.addEventButton);
         createEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,24 +94,31 @@ public class AddEventActivity extends AppCompatActivity {
             if(requestCode == RequestCode.START_TIME.ordinal()) {
                 startHours = data.getExtras().getInt("HOURS");
                 startMinutes = data.getExtras().getInt("MINUTES");
+                updateStartTimeText();
             } else if(requestCode == RequestCode.END_TIME.ordinal()) {
                 endHours = data.getExtras().getInt("HOURS");
                 endMinutes = data.getExtras().getInt("MINUTES");
+                updateEndTimeText();
             } else if(requestCode == RequestCode.LOCATION.ordinal()) {
                 latitude = data.getExtras().getFloat("LATITUDE");
                 longitude = data.getExtras().getFloat("LONGITUDE");
             }
-
-            updateTimeTexts();
         }
     }
 
-    private void updateTimeTexts() {
+    private void updateStartTimeText() {
         TextView startTimeText = (TextView) findViewById(R.id.startTimeText);
-        TextView endTimeText = (TextView) findViewById(R.id.endTimeText);
-
         startTimeText.setText(String.format("%d:%d", startHours, startMinutes));
-        endTimeText.setText(String.format("%d:%d", endHours, endMinutes));
+
+        if(endHours < startHours || (endHours == startHours && endMinutes < startMinutes)) {
+            endHours = startHours;
+            endMinutes = startMinutes;
+        }
     }
 
+    private void updateEndTimeText() {
+        TextView endTimeText = (TextView) findViewById(R.id.endTimeText);
+        endTimeText.setText(String.format("%d:%d", endHours, endMinutes));
+
+    }
 }
