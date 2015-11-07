@@ -109,6 +109,7 @@ app.post('/changetravelrange', function(req, res){
 app.post('/createEvent', function(req, res){
   pool.getConnection(function(err, connection) {
     if(err){
+	console.log(err);
       res.status(500).send("Cannot currently access database. Try again in couple minutes");
       return;
     } 
@@ -121,11 +122,13 @@ app.post('/createEvent', function(req, res){
                                                                     connection.escape(req.body.type) + ")";                                                                           connection.escape(req.body.interests) + ")";
     connection.query(sql, function(err, results, fields){
       if(err){
+	console.log(err);
         res.status(500).send("Invalid database query. Check fields and try again.");
         return;
       }
       res.status(200).send("Event created succesfully!");
-    });
+	console.log("success");   
+ });
     connection.release();
   });
 });
