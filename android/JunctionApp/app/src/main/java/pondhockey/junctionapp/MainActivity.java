@@ -2,6 +2,13 @@ package pondhockey.junctionapp;
 
 import android.content.Intent;
 import android.os.StrictMode;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +54,8 @@ public class MainActivity extends ActionBarActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        startService(new Intent(this, NotificationService.class));
     }
 
     @Override
