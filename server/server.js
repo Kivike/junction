@@ -29,7 +29,7 @@ app.post('/newuser', function(req, res){
   pool.getConnection(function(err, connection) {
     if(err){
       res.status(500).send("Cannot currently access database. Try again in couple minutes");
-	console.log("Error getting connection from pool " + err);
+	    console.log("Error getting connection from pool " + err);
       return;
     } 
 
@@ -39,7 +39,7 @@ app.post('/newuser', function(req, res){
                                                                             connection.escape(req.body.travelrange) + ")";
     connection.query(sql, function(err, results, fields){
       if(err){
-	console.log("error with query " + err);
+	      console.log("error with query " + err);
         res.status(500).send("Invalid database query. Check fields and try again.");
         return;
       }
@@ -52,6 +52,7 @@ app.post('/newuser', function(req, res){
 app.post('/changelocation', function(req, res){
   pool.getConnection(function(err, connection){
     if(err){
+      console.log(err);
       res.status(500).send("Cannot currently access database. Try again in couple minutes");
       return;
     }
@@ -59,6 +60,7 @@ app.post('/changelocation', function(req, res){
     var sql = "UPDATE users SET location=" + connection.escape(req.body.location) + " WHERE account=" + connection.escape(req.body.account);
     connection.query(sql, function(err, results, fields){
       if(err){
+        console.log(err);
         res.status(500).send("Invalid database query. Check fields and try again.");
         return;
       }
@@ -71,6 +73,7 @@ app.post('/changelocation', function(req, res){
 app.post('/changeinterests', function(req, res){
   pool.getConnection(function(err, connection){
     if(err){
+      console.log(err);
       res.status(500).send("Cannot currently access database. Try again in couple minutes");
       return;
     }
@@ -78,6 +81,7 @@ app.post('/changeinterests', function(req, res){
     var sql = "UPDATE users SET interests=" + connection.escape(req.body.interests) + " WHERE account =" + connection.escape(req.body.account);
     connection.query(sql, function(err, results, fields) {
       if(err){
+        console.log(err);
         res.status(500).send("Invalid database query. Check fields and try again.");
         return;
       }
@@ -90,6 +94,7 @@ app.post('/changeinterests', function(req, res){
 app.post('/changetravelrange', function(req, res){
   pool.getConnection(function(err, connection){
     if(err){
+      console.log(err);
       res.status(500).send("Cannot currently access database. Try again in couple minutes");
       return;
     }
@@ -97,6 +102,7 @@ app.post('/changetravelrange', function(req, res){
     var sql = "UPDATE users SET travelrange=" + connection.escape(req.body.travelrange) + " WHERE account=" + connection.escape(req.body.account);
     connection.query(sql, function(err, results, fields){
       if(err){
+        console.log(err);
         res.status(500).send("Invalid database query. Check fields and try again.");
         return;
       }
@@ -109,20 +115,20 @@ app.post('/changetravelrange', function(req, res){
 app.post('/createEvent', function(req, res){
   pool.getConnection(function(err, connection) {
     if(err){
-	console.log(err);
+	    console.log(err);
       res.status(500).send("Cannot currently access database. Try again in couple minutes");
       return;
     } 
 
-    var sql = "INSERT INTO events (title, description, location, startingtime, endingtime, type) VALUES (" + connection.escape(req.body.title) + "," +
+    var sql = "INSERT INTO events (title, description, location, startingtime, endingtime, type, participants) VALUES (" + connection.escape(req.body.title) + "," +
                                                                     connection.escape(req.body.description) + "," + 
                                                                     connection.escape(req.body.location) + "," +
-                                                                    connection.escape(req.body.startingtime) + "," +
-                                                                    connection.escape(req.body.endingtime) + "," + 
-                                                                    connection.escape(req.body.type) + ")";                                                                           connection.escape(req.body.interests) + ")";
+                                                                    connection.escape(req.body.startingTime) + "," +
+                                                                    connection.escape(req.body.endingTime) + "," + 
+                                                                    connection.escape(req.body.type) + ",0)";                                                                           connection.escape(req.body.interests) + ")";
     connection.query(sql, function(err, results, fields){
       if(err){
-	console.log(err);
+	      console.log(err);
         res.status(500).send("Invalid database query. Check fields and try again.");
         return;
       }
@@ -136,13 +142,14 @@ app.post('/createEvent', function(req, res){
 app.get('/events', function(req, res){
   pool.getConnection(function(err, connection){
     if(err){
-	console.log(err);
+	    console.log(err);
       res.status(500).send("Cannot currently access database. Try again in couple minutes");
       return;
     }
     
     connection.query("SELECT * FROM events", function(err, results, fields) {
       if(err){
+        console.log(err);
         res.status(500).send("Invalid database query. Check fields and try again.");
         return;
       }
@@ -153,6 +160,7 @@ app.get('/events', function(req, res){
     
       connection.query(sql, function(err, results, fields) {
         if(err){
+          console.log(err);
           res.status(500).send("Invalid database query. Check fields and try again.");
           return;
         }
