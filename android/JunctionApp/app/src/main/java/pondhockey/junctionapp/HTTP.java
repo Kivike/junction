@@ -8,14 +8,18 @@ import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class HTTP{
@@ -107,6 +111,43 @@ public class HTTP{
         return sendHttpCall(httpPost);
     }
 
+    public String createEvent(Coordinate location, Date time, int type){
+
+        HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/createEvent");
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("location", location.toString()));
+        nameValuePairs.add(new BasicNameValuePair("time", time.toString()));
+        nameValuePairs.add(new BasicNameValuePair("type", "" + type));
+
+        try{
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        }catch(java.io.UnsupportedEncodingException e){
+            Log.w("Error", "Unsupported Encoding: " + e);
+            System.exit(0);
+        }
+
+        return sendHttpCall(httpPost);
+    }
+
+    public String getEvents(String account){
+
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet("http://rope.myftp.org:8000/createEvent?" + account);
+        try{
+            HttpResponse response = httpclient.execute(httpGet);
+            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            in.close();
+
+            String responseString = in.toString();
+            return responseString;
+
+        }catch(Exception e) {
+            Log.e("log_tag", "Error in http connection " + e.toString());
+        }
+        return null;
+    }
+
     private String sendHttpCall(HttpPost httpPost){
         try {
             HttpResponse response = this.httpClient.execute(httpPost);
@@ -133,6 +174,4 @@ public class HTTP{
         }
         return "Error";
     }
-
-
 }
