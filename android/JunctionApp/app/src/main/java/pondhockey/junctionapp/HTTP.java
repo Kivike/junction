@@ -1,6 +1,9 @@
 package pondhockey.junctionapp;
 
+import android.os.StrictMode;
 import android.util.Log;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -17,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -38,13 +42,13 @@ public class HTTP{
         return instance;
     }
 
-    public String createNewUser(String account, Coordinate location, int[] interests, float range){
+    public String createNewUser(String account, String location, int[] interests, float range){
 
         HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/newuser");
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
         nameValuePairs.add(new BasicNameValuePair("account", account));
-        nameValuePairs.add(new BasicNameValuePair("location", location.toString()));
+        nameValuePairs.add(new BasicNameValuePair("location", location));
         nameValuePairs.add(new BasicNameValuePair("interests", Arrays.toString(interests)));
         nameValuePairs.add(new BasicNameValuePair("travelrange", new DecimalFormat("0.0").format(range)));
 
@@ -58,13 +62,13 @@ public class HTTP{
         return sendHttpCall(httpPost);
     }
 
-    public String changeLocation(String account, Coordinate location){
+    public String changeLocation(String account, String location){
 
         HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/changelocation");
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("account", account));
-        nameValuePairs.add(new BasicNameValuePair("location", location.toString()));
+        nameValuePairs.add(new BasicNameValuePair("location", location));
 
         try{
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -111,13 +115,22 @@ public class HTTP{
         return sendHttpCall(httpPost);
     }
 
-    public String createEvent(Coordinate location, Date time, int type){
+    public String createEvent(Event event){
+        return createEvent(event.getTitle(), event.getDescription(), event.getStartDate(), event.getEndDate(), event.getLocationString(), event.getSportType());
+    }
 
+    public String createEvent(String title, String description, SimpleDateFormat startingTime, SimpleDateFormat endingTime, String location, int type){
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/createEvent");
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("location", location.toString()));
-        nameValuePairs.add(new BasicNameValuePair("time", time.toString()));
+        nameValuePairs.add(new BasicNameValuePair("title", title));
+        nameValuePairs.add(new BasicNameValuePair("description", description));
+        nameValuePairs.add(new BasicNameValuePair("startingTime", startingTime.toPattern()));
+        nameValuePairs.add(new BasicNameValuePair("endingTime", endingTime.toPattern()));
+        nameValuePairs.add(new BasicNameValuePair("location", location));
         nameValuePairs.add(new BasicNameValuePair("type", "" + type));
 
         try{

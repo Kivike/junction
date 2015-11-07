@@ -18,8 +18,8 @@ import java.util.List;
 public class AddEventActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     enum RequestCode {START_TIME, END_TIME, LOCATION }
 
-    SimpleDateFormat startDate;
-    SimpleDateFormat endDate;
+    SimpleDateFormat startDate = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+    SimpleDateFormat endDate = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
     int startHours;
     int startMinutes;
@@ -116,6 +116,7 @@ public class AddEventActivity extends AppCompatActivity implements AdapterView.O
         Event newEvent = new Event(title, description, startDate, endDate, sportType, MapsActivity.markerLocation);
 
         // TODO: Send new event to server
+        HTTP.getInstance().createEvent(newEvent);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

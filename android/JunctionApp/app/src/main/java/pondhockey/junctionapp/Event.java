@@ -10,8 +10,8 @@ import java.util.Date;
  * Class holds all the data for an event
  */
 public class Event {
-    public String title;
-    public String description;
+    private String title;
+    private String description;
 
     private SimpleDateFormat startDate;
     private SimpleDateFormat endDate;
@@ -51,6 +51,10 @@ public class Event {
         return userParticipating;
     }
 
+    public String getTitle(){ return title;}
+
+    public String getDescription(){ return description; }
+
     public SimpleDateFormat getStartDate() {
         return startDate;
     }
@@ -66,7 +70,7 @@ public class Event {
     public String getLocationString(){
         Double latitude = location.latitude;
         Double longitude = location.longitude;
-        String str = new DecimalFormat("0.0000").format(latitude) + " " + new DecimalFormat("0.0000").format(longitude);
+        String str = new DecimalFormat("#.####").format(latitude) + " " + new DecimalFormat("#.####").format(longitude);
         return str;
     }
 
