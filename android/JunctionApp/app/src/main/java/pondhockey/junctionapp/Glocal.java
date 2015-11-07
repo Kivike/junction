@@ -10,10 +10,12 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.GoogleMap;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Glocal extends ListActivity {
+public class Glocal extends AppCompatActivity{
     CalendarView calendar;
     ListView eventList;
 
