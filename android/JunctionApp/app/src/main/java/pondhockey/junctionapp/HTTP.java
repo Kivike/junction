@@ -28,7 +28,7 @@ public class HTTP{
         this.httpClient = new DefaultHttpClient();
     }
 
-    public HTTP getInstance(){
+    public static HTTP getInstance(){
         if(instance == null)
             instance = new HTTP();
         return instance;
@@ -36,13 +36,13 @@ public class HTTP{
 
     public String createNewUser(String account, Coordinate location, int[] interests, float range){
 
-        HttpPost httpPost = new HttpPost("http://rope.myftp.org/newuser");
+        HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/newuser");
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
         nameValuePairs.add(new BasicNameValuePair("account", account));
         nameValuePairs.add(new BasicNameValuePair("location", location.toString()));
         nameValuePairs.add(new BasicNameValuePair("interests", Arrays.toString(interests)));
-        nameValuePairs.add(new BasicNameValuePair("range", new DecimalFormat("0.0").format(range)));
+        nameValuePairs.add(new BasicNameValuePair("travelrange", new DecimalFormat("0.0").format(range)));
 
         try{
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -68,7 +68,7 @@ public class HTTP{
             } else{
                 //Closes the connection
                 response.getEntity().getContent().close();
-                return response.getEntity().writeTo(out).toString();
+                return statusLine.getReasonPhrase();
             }
         }catch(java.io.IOException e){
             Log.w("Error", "Cannot write data: " + e);
