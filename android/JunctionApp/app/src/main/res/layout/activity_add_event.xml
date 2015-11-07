@@ -106,19 +106,31 @@
         android:layout_height="wrap_content"
         android:text="Select location"
         android:id="@+id/locationButton"
+        android:layout_marginTop="51dp"
         android:layout_below="@+id/endTimeButton"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sport_spinner"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/endTimeButton"
+        android:layout_toRightOf="@+id/endTimeButton"
+        android:layout_alignRight="@+id/addEventButton"
+        android:layout_alignEnd="@+id/addEventButton" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Puutarhatie 15"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Sport"
         android:id="@+id/textView"
-        android:textSize="26sp"
-        android:layout_below="@+id/locationButton"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/endTimeButton"
+        android:layout_alignEnd="@+id/endTimeButton"
+        android:layout_alignTop="@+id/sport_spinner" />
 
 </RelativeLayout>

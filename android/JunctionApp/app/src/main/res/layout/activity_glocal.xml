@@ -33,8 +33,8 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/list"
+        android:layout_height="match_parent"
+        android:id="@+id/eventListView"
         android:layout_above="@+id/addEventButton"
         android:layout_alignRight="@+id/addEventButton"
         android:layout_alignEnd="@+id/addEventButton"

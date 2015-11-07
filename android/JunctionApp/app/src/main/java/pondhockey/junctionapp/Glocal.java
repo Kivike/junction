@@ -10,10 +10,12 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.GoogleMap;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Glocal extends ListActivity {
+public class Glocal extends AppCompatActivity{
     CalendarView calendar;
     ListView eventList;
 
@@ -26,9 +28,13 @@ public class Glocal extends ListActivity {
         setContentView(R.layout.activity_glocal);
 
         events = new ArrayList<>();
-        events.add("Footbal");
-        events.add("Basketball");
-        events.add("Tennis");
+        events.add("Football 17:00 - 18:00");
+        events.add("Basketball 18:30 - 19:30");
+        events.add("Tennis 19:15 - 20:30");
+
+        eventList = (ListView) findViewById(R.id.eventListView);
+        listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, events);
+        eventList.setAdapter(listAdapter);
 
         Button addEventButton = (Button) findViewById(R.id.addEventButton);
         addEventButton.setOnClickListener(new View.OnClickListener() {
@@ -42,15 +48,14 @@ public class Glocal extends ListActivity {
         calendar.setShownWeekCount(2);
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
 
-        //listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, events);
-        //setListAdapter(listAdapter);
-
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 updateEventList(year, month, dayOfMonth);
             }
         });
+
+
     }
 
     private void getAllEvents() {
