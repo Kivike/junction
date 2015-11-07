@@ -78,7 +78,43 @@ public class HTTP{
     }
 
     public String changeInterests(String account, int[] interests){
-        return null;
+        HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/changeinterests");
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("account", account));
+        nameValuePairs.add(new BasicNameValuePair("interests", Arrays.toString(interests)));
+
+        try{
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        }catch(java.io.UnsupportedEncodingException e){
+            Log.w("Error", "Unsupported Encoding: " + e);
+            System.exit(0);
+        }
+
+        try {
+            HttpResponse response = this.httpClient.execute(httpPost);
+
+            StatusLine statusLine = response.getStatusLine();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+
+                response.getEntity().writeTo(out);
+                String responseString = out.toString();
+
+                out.close();
+
+                return responseString;
+
+            } else{
+                //Closes the connection
+                response.getEntity().getContent().close();
+                return statusLine.getReasonPhrase();
+            }
+        }catch(java.io.IOException e){
+            Log.w("Error", "Cannot write data: " + e);
+            System.exit(0);
+        }
+        return "Error";
     }
 
 
