@@ -14,7 +14,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
-    public LatLng markerLocation;
+    public static LatLng markerLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

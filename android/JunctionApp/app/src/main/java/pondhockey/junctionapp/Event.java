@@ -2,6 +2,7 @@ package pondhockey.junctionapp;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,6 +16,9 @@ public class Event {
     private SimpleDateFormat startDate;
     private SimpleDateFormat endDate;
 
+    private int sportType;
+    private LatLng location;
+
     private int participatorCount;
 
     LatLng mapPoint;
@@ -27,11 +31,13 @@ public class Event {
     // Sport type enum needed?
 
 
-    public Event(String title, String description, SimpleDateFormat startDate, SimpleDateFormat endDate) {
+    public Event(String title, String description, SimpleDateFormat startDate, SimpleDateFormat endDate, int sportType, LatLng location) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.sportType = sportType;
+        this.location = location;
     }
 
     /*
@@ -51,6 +57,17 @@ public class Event {
 
     public SimpleDateFormat getEndDate() {
         return endDate;
+    }
+
+    public int getSportType(){ return sportType;}
+
+    public LatLng getLocation(){ return location;}
+
+    public String getLocationString(){
+        Double latitude = location.latitude;
+        Double longitude = location.longitude;
+        String str = new DecimalFormat("0.0000").format(latitude) + " " + new DecimalFormat("0.0000").format(longitude);
+        return str;
     }
 
     public void setAlert(boolean alert) {
