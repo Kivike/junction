@@ -65,11 +65,13 @@ app.get('/checkuser', function(req, res){
           res.status(500).send("Invalid database query. Check fields and try again.");
           return;
         }
-        if(results.length() > 0){
+	console.log(results);
+        if(results.length > 0){
           res.send(true);
         }else{
           res.send(false);
         }
+	});
     connection.release();
   });
 });
