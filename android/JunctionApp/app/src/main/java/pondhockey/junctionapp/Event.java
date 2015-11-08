@@ -12,6 +12,7 @@ import java.util.Date;
  */
 
 public class Event implements Serializable{
+    private int id;
     private String title;
     private String description;
 
@@ -33,7 +34,8 @@ public class Event implements Serializable{
     // Sport type enum needed?
 
 
-    public Event(String title, String description, SimpleDateFormat startDate, SimpleDateFormat endDate, int sportType, LatLng location) {
+    public Event(int id, String title, String description, SimpleDateFormat startDate, SimpleDateFormat endDate, int sportType, LatLng location) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -52,6 +54,8 @@ public class Event implements Serializable{
     public boolean isUserParticipating() {
         return userParticipating;
     }
+
+    public int getId(){return id;}
 
     public String getTitle(){ return title;}
 

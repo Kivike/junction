@@ -170,6 +170,7 @@ public class HTTP{
 
             for(int i = 0; i < jsonArray.length(); i++){
                 JSONObject jsonEvent = jsonArray.getJSONObject(i);
+                int id = jsonEvent.getInt("id");
                 String title = jsonEvent.getString("Title");
                 String description = jsonEvent.getString("Description");
 
@@ -185,11 +186,7 @@ public class HTTP{
                 double lng = Double.parseDouble(jsonEvent.getString("location").split(" ")[1].replace(',', '.'));
                 LatLng location = new LatLng(lat, lng);
 
-                Log.e("aa","¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤");
-                Log.e("aa", title + " " + description + " " + startDate.getCalendar().getTime() + " " + endDate.getCalendar().getTime());
-                Log.e("aa", sportType + " " + location.latitude + " " + location.longitude);
-
-                events.add(new Event(title, description, startDate, endDate, sportType, location));
+                events.add(new Event(id, title, description, startDate, endDate, sportType, location));
             }
 
             return events;
