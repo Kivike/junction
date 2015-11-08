@@ -73,7 +73,6 @@ public class SettingsActivity extends AppCompatActivity {
         protected Integer doInBackground(String... params){
             HTTP http = HTTP.getInstance();
 
-
             if(http.checkUserExists(MainActivity.android_id)){
                 http.changeSettings(MainActivity.android_id, params[0], seekBarValue);
             }else {

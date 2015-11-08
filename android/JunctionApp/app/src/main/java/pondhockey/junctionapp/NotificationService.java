@@ -49,7 +49,7 @@ public class NotificationService extends Service {
     }
 
     private void getEvents(){
-        ArrayList<Event> gottenEvents = HTTP.getInstance().getEvents("test");
+        ArrayList<Event> gottenEvents = HTTP.getInstance().getEvents(MainActivity.android_id);
 
         for(int i = 0; i < gottenEvents.size() - lastUpdate.size(); i++){
             //Create new notification

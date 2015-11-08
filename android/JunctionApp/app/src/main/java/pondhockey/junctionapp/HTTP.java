@@ -45,6 +45,29 @@ public class HTTP{
     }
 
     public boolean checkUserExists(String account){
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet("http://rope.myftp.org:8000/checkuser?account=" + account);
+        try{
+            HttpResponse response = httpclient.execute(httpGet);
+            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuilder responseBuilder = new StringBuilder();
+            String aux = "";
+
+            while((aux = in.readLine()) != null){
+                responseBuilder.append(aux);
+            }
+
+            in.close();
+
+            String responseString = responseBuilder.toString();
+            boolean bool = Boolean.parseBoolean(responseString);
+
+            return bool;
+
+        }catch(Exception e) {
+            Log.e("log_tag", "Error in http connection " + e.toString());
+        }
         return false;
     }
 
@@ -70,7 +93,7 @@ public class HTTP{
 
     public void changeSettings(String account, String location, float range){
         changeLocation(account, location);
-        changeInterests(account, new int[]{1,2,3});
+        changeInterests(account, new int[]{1, 2, 3});
         changeTravelRange(account, range);
     }
 
