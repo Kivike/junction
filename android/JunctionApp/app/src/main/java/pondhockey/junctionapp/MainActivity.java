@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -52,9 +53,16 @@ public class MainActivity extends AppCompatActivity {
     int selectedMonth;
     int selectedDay;
 
+    TelephonyManager tm;
+    public static String android_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        android_id = "" + tm.getDeviceId().hashCode();
+
         setContentView(R.layout.activity_glocal);
 
         Button settingsButton = (Button) findViewById(R.id.settingsButton);

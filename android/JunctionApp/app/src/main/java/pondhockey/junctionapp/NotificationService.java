@@ -49,13 +49,13 @@ public class NotificationService extends Service {
     }
 
     private void getEvents(){
-        ArrayList<Event> gottenEvents = HTTP.getInstance().getEvents("test");
+        ArrayList<Event> gottenEvents = HTTP.getInstance().getEvents(MainActivity.android_id);
 
         for(int i = 0; i < gottenEvents.size() - lastUpdate.size(); i++){
             //Create new notification
             Event newEvent = gottenEvents.get(lastUpdate.size() + i);
             String title = sportTypeToSport(newEvent.getSportType()) + " - " + newEvent.getTitle();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM.dd hh:mm");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM HH:mm");
             String description = simpleDateFormat.format(newEvent.getStartDate().getCalendar().getTime()) + " - " + newEvent.getDescription();
             createNotification(title, description);
         }
