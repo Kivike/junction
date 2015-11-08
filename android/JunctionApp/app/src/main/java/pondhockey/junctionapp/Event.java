@@ -2,6 +2,7 @@ package pondhockey.junctionapp;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,7 +10,8 @@ import java.util.Date;
 /*
  * Class holds all the data for an event
  */
-public class Event {
+
+public class Event implements Serializable{
     private String title;
     private String description;
 

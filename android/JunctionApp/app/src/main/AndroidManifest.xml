@@ -61,14 +61,14 @@
             android:label="Global calendar" >
         </activity>
         <activity
-            android:name=".owncal"
-            android:label="Own calendar" >
-        </activity>
-        <activity
             android:name=".SettingsActivity"
             android:label="Settings" >
         </activity>
-
+        <activity
+            android:name=".EventDetails"
+            android:label="@string/title_activity_event_details"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

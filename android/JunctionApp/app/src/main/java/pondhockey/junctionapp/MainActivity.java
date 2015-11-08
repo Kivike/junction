@@ -1,5 +1,6 @@
 package pondhockey.junctionapp;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.StrictMode;
 import android.app.Notification;
@@ -10,39 +11,35 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.graphics.Color;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
+    CalendarView calendar;
+
+    ArrayList<Event> events;
+    Button[] eventButtons;
+
+    int selectedYear;
+    int selectedMonth;
+    int selectedDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //startActivity(new Intent(MainActivity.this, AddEventActivity.class));
-
-        Button globalCalBtn = (Button) findViewById(R.id.glocalButton);
-        globalCalBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("A", "Glocal view");
-                startActivity(new Intent(MainActivity.this, Glocal.class));
-            }
-        });
-
-        Button ownCalBtn = (Button) findViewById(R.id.ownCalButton);
-        ownCalBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, owncal.class));
-            }
-        });
+        setContentView(R.layout.activity_glocal);
 
         Button settingsButton = (Button) findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -52,28 +49,89 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        getEvents();
+
+        Button addEventButton = (Button) findViewById(R.id.addEventButton);
+        addEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddEventActivity.class);
+                intent.putExtra("YEAR", selectedYear);
+                intent.putExtra("MONTH", selectedMonth);
+                intent.putExtra("DAY", selectedDay);
+                startActivity(intent);
+            }
+        });
+
+        calendar = (CalendarView) findViewById(R.id.calendarView);
+        calendar.setShownWeekCount(2);
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                selectedYear = year;
+                selectedMonth = month;
+                selectedDay = dayOfMonth;
+
+                updateEventList(year, month, dayOfMonth);
+            }
+        });
+
         startService(new Intent(this, NotificationService.class));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    /*
+     * Find events and create buttons for them
+     */
+    private void getEvents() {
+        events = getSampleEvents();
+        eventButtons = new Button[events.size()];
+        LinearLayout scroll = (LinearLayout) findViewById(R.id.scrollLayout);
+
+        for(int i = 0; i < events.size(); i++) {
+            final Event event = events.get(i);
+
+            eventButtons[i] = new Button(this);
+            eventButtons[i].setHeight(70);
+            eventButtons[i].setMinWidth(200);
+            eventButtons[i].setMinHeight(70);
+            eventButtons[i].setTag(i);
+            eventButtons[i].setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   Intent intent = new Intent(MainActivity.this, EventDetails.class);
+                   intent.putExtra("EVENT", event);
+                   startActivity(intent);
+               }
+            });
+
+            String buttonText = event.getTitle() + " 17:15 - 18:15";
+
+            if(event.isUserParticipating()) {
+                eventButtons[i].setBackgroundColor(Color.GREEN);
+            }
+
+            eventButtons[i].setText(buttonText);
+
+            scroll.addView(eventButtons[i]);
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    private ArrayList<Event> getSampleEvents() {
+        ArrayList<Event> sampleEvents = new ArrayList<>();
+        sampleEvents.add(new Event("Football", "asddsdsaad", null, null, 1, null));
+        sampleEvents.add(new Event("Ice hockey", "fdsssssssssssssssssssssss", null, null, 1, null));
+        sampleEvents.add(new Event("Running", "sgfdgdgdgddhdhdh", null, null, 1, null));
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        Event aaa = new Event("Floorball", "", null, null, 1, null);
+        aaa.participate(true);
+        sampleEvents.add(aaa);
 
-        return super.onOptionsItemSelected(item);
+        return sampleEvents;
+    }
+
+    private void updateEventList(int year, int month, int dayOfMonth) {
+        //
     }
 }
