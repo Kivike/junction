@@ -44,6 +44,10 @@ public class HTTP{
         return instance;
     }
 
+    public boolean checkUserExists(String account){
+        return false;
+    }
+
     public String createNewUser(String account, String location, int[] interests, float range){
 
         HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/newuser");
@@ -64,7 +68,13 @@ public class HTTP{
         return sendHttpCall(httpPost);
     }
 
-    public String changeLocation(String account, String location){
+    public void changeSettings(String account, String location, float range){
+        changeLocation(account, location);
+        changeInterests(account, new int[]{1,2,3});
+        changeTravelRange(account, range);
+    }
+
+    private String changeLocation(String account, String location){
 
         HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/changelocation");
 
@@ -82,7 +92,7 @@ public class HTTP{
         return sendHttpCall(httpPost);
     }
 
-    public String changeInterests(String account, int[] interests){
+    private String changeInterests(String account, int[] interests){
         HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/changeinterests");
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -99,7 +109,7 @@ public class HTTP{
         return sendHttpCall(httpPost);
     }
 
-    public String changeTravelRange(String account, float range){
+    private String changeTravelRange(String account, float range){
 
         HttpPost httpPost = new HttpPost("http://rope.myftp.org:8000/changetravelrange");
 
