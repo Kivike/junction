@@ -7,4 +7,6 @@
     <string name="title_activity_add_event">AddEventActivity</string>
     <string name="title_activity_time_select">TimeSelectActivity</string>
     <string name="title_activity_map">Map</string>
+    <string name="title_activity_own_calendar">OwnCalendar</string>
+    <string name="title_activity_event_details">EventDetails</string>
 </resources>
