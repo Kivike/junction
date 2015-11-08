@@ -10,10 +10,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class EventDetails extends AppCompatActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class EventDetails extends AppCompatActivity implements OnMapReadyCallback {
     Event event;
     Button backButton;
     Button participationButton;
+
+    GoogleMap mMap;
+    LatLng eventLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +50,10 @@ public class EventDetails extends AppCompatActivity {
                 finish();
             }
         });
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.eventMap);
+        mapFragment.getMapAsync(this);
     }
 
     private void setEventData(Event event) {
@@ -52,6 +66,8 @@ public class EventDetails extends AppCompatActivity {
         String eventDate = "15.5.";
         String eventTime = "16:15-17:45";
         int eventParticipants = 10;
+
+        eventLocation = event.getLocation();
 
         title.setText(event.getTitle());
         description.setText(event.getDescription());
@@ -79,5 +95,13 @@ public class EventDetails extends AppCompatActivity {
             participationButton.setText("Sign up");
             participationButton.setBackgroundColor(Color.parseColor("#6d905f"));
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        mMap.addMarker(new MarkerOptions().position(eventLocation).title("Marker"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, 18f));
     }
 }

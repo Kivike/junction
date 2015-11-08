@@ -11,7 +11,7 @@ import java.util.Date;
  * Class holds all the data for an event
  */
 
-public class Event implements Serializable{
+public class Event implements Serializable {
     private int id;
     private String title;
     private String description;
@@ -20,7 +20,9 @@ public class Event implements Serializable{
     private SimpleDateFormat endDate;
 
     private int sportType;
-    private LatLng location;
+
+    private double latitude;
+    private double longitude;
 
     private int participatorCount;
 
@@ -33,6 +35,15 @@ public class Event implements Serializable{
 
     // Sport type enum needed?
 
+    public Event(String title, String description, SimpleDateFormat startDate, SimpleDateFormat endDate, int sportType, LatLng location) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.sportType = sportType;
+        this.latitude = location.latitude;
+        this.longitude = location.longitude;
+    }
 
     public Event(int id, String title, String description, SimpleDateFormat startDate, SimpleDateFormat endDate, int sportType, LatLng location) {
         this.id = id;
@@ -41,7 +52,8 @@ public class Event implements Serializable{
         this.startDate = startDate;
         this.endDate = endDate;
         this.sportType = sportType;
-        this.location = location;
+        this.latitude = location.latitude;
+        this.longitude = location.longitude;
     }
 
     /*
@@ -71,11 +83,9 @@ public class Event implements Serializable{
 
     public int getSportType(){ return sportType;}
 
-    public LatLng getLocation(){ return location;}
+    public LatLng getLocation(){ return new LatLng(latitude, longitude);}
 
     public String getLocationString(){
-        Double latitude = location.latitude;
-        Double longitude = location.longitude;
         String str = new DecimalFormat("#.####").format(latitude) + " " + new DecimalFormat("#.####").format(longitude);
         return str;
     }
