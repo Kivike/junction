@@ -166,7 +166,7 @@ public class AddEventActivity extends AppCompatActivity implements AdapterView.O
     private void updateStartTimeText() {
         TextView startTimeText = (TextView) findViewById(R.id.startTimeText);
         DecimalFormat formatter = new DecimalFormat("00");
-        String formattedMinutes = formatter.format(endMinutes);
+        String formattedMinutes = formatter.format(startMinutes);
         startTimeText.setText(String.format("%d:%s", startHours, formattedMinutes));
         
         if(endHours < startHours || (endHours == startHours && endMinutes < startMinutes)) {
@@ -176,8 +176,14 @@ public class AddEventActivity extends AppCompatActivity implements AdapterView.O
     }
 
     private void updateEndTimeText() {
+        DecimalFormat formatter = new DecimalFormat("00");
+        String formattedMinutes = formatter.format(endMinutes);
+
+
         TextView endTimeText = (TextView) findViewById(R.id.endTimeText);
-        endTimeText.setText(String.format("%d:%d", endHours, endMinutes));
+
+        endTimeText.setText(String.format("%d:%s", endHours, formattedMinutes));
+
 
     }
 }
