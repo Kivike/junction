@@ -34,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.Executor;
@@ -141,7 +142,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            String buttonText = event.getTitle() + " 17:15 - 18:15";
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
+            String startTimeString = timeFormat.format(event.getStartDate().getCalendar().getTime());
+            String endTimeString = timeFormat.format(event.getEndDate().getCalendar().getTime());
+
+            String buttonText = event.getTitle() + " " + startTimeString + "-" + endTimeString;
 
             if(event.isUserParticipating()) {
                 eventButtons[i].setBackgroundColor(Color.GREEN);
