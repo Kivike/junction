@@ -156,7 +156,7 @@ app.get('/events', function(req, res){
       
       var sports = results;
 
-      var sql = "SELECT * FROM users WHERE account = " + connection.escape(req.body.account);
+      var sql = "SELECT * FROM users WHERE account = " + connection.escape(req.query.account);
     
       connection.query(sql, function(err, results, fields) {
         if(err){
@@ -166,11 +166,11 @@ app.get('/events', function(req, res){
         }
         var userlocation = results[0].location;
 
-        var userCoords = userlocation.location.split(" ");
+        var userCoords = userlocation.split(" ");
         var userLatitude = parseFloat(userCoords[0]);
         var userLongitude = parseFloat(userCoords[1]);
 
-        var usertravelrange = parseFloat(results[0].travelrange);
+        var travelrange = parseFloat(results[0].travelrange);
         var possibleSports = [];
 
         for(var i = 0; i < sports.length; i++){
@@ -178,13 +178,17 @@ app.get('/events', function(req, res){
           var sportsCoords = sports[i].location.split(" ");
           var sportsLatitude = parseFloat(sportsCoords[0]);
           var sportsLongitude = parseFloat(sportsCoords[1]);
-
-          if(coordinatesToDistance(userLatitude, userLongitude, sportsLatitude, sportsLongitude) < travelrange){
-            possibleSports.push(results[i]);
+	
+	  var distance = coordinatesToDistance(userLatitude, userLongitude, sportsLatitude, sportsLongitude);
+          
+	  if(distance < travelrange * 1000){
+            possibleSports.push(sports[i]);
           }
         }
+	console.log("returning:");
+	console.log(possibleSports);
         res.status(200).send(possibleSports);
-      });
+     });
     });
     connection.release();
   });
@@ -192,10 +196,10 @@ app.get('/events', function(req, res){
 
 function coordinatesToDistance(lat1, lon1, lat2, lon2){
   var R = 6371000; // metres
-  var φ1 = lat1.toRadians();
-  var φ2 = lat2.toRadians();
-  var Δφ = (lat2-lat1).toRadians();
-  var Δλ = (lon2-lon1).toRadians();
+  var φ1 = lat1 * (Math.PI / 180); //to radians
+  var φ2 = lat2 * (Math.PI / 180);
+  var Δφ = (lat2-lat1) * (Math.PI / 180);
+  var Δλ = (lon2-lon1) * (Math.PI / 180);
 
   var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
           Math.cos(φ1) * Math.cos(φ2) *
@@ -203,6 +207,8 @@ function coordinatesToDistance(lat1, lon1, lat2, lon2){
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
   var d = R * c;
+
+  return d;
 }
 
 var server = app.listen(8000, function () {
