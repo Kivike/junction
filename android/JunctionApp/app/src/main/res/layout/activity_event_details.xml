@@ -111,6 +111,6 @@
         android:layout_below="@+id/eventTitle"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginRight="120dp" />
+        android:layout_marginRight="135dp" />
 
 </RelativeLayout>

@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout scroll = (LinearLayout) findViewById(R.id.scrollLayout);
 
         for(int i = 0; i < events.size(); i++) {
+            final Event event = events.get(i);
+
             eventButtons[i] = new Button(this);
             eventButtons[i].setHeight(70);
             eventButtons[i].setMinWidth(200);
@@ -88,12 +90,11 @@ public class MainActivity extends AppCompatActivity {
                @Override
                public void onClick(View v) {
                    Intent intent = new Intent(MainActivity.this, EventDetails.class);
-                   intent.putExtra("EVENT_ID", 252);
+                   intent.putExtra("EVENT", event);
                    startActivity(intent);
                }
             });
 
-            Event event = events.get(i);
             String buttonText = event.title + " 17:15 - 18:15";
 
             if(event.isUserParticipating()) {
@@ -108,9 +109,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Event> getSampleEvents() {
         ArrayList<Event> sampleEvents = new ArrayList<>();
-        sampleEvents.add(new Event("Football", "", null, null, 1, null));
-        sampleEvents.add(new Event("Ice hockey", "", null, null, 1, null));
-        sampleEvents.add(new Event("Running", "", null, null, 1, null));
+        sampleEvents.add(new Event("Football", "asddsdsaad", null, null, 1, null));
+        sampleEvents.add(new Event("Ice hockey", "fdsssssssssssssssssssssss", null, null, 1, null));
+        sampleEvents.add(new Event("Running", "sgfdgdgdgddhdhdh", null, null, 1, null));
 
         Event aaa = new Event("Floorball", "", null, null, 1, null);
         aaa.participate(true);

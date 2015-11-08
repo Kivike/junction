@@ -29,9 +29,9 @@ public class EventDetails extends AppCompatActivity {
             }
         });
 
-        int eventId = getIntent().getExtras().getInt("EVENT_ID");
+        event = (Event) getIntent().getExtras().getSerializable("EVENT");
 
-        setEventData(eventId);
+        setEventData(event);
 
         Button backButton = (Button) findViewById(R.id.detailsBackButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -42,10 +42,7 @@ public class EventDetails extends AppCompatActivity {
         });
     }
 
-    private void setEventData(int eventId) {
-        // TODO: Get event data from database
-        event = getSampleEvent();
-
+    private void setEventData(Event event) {
         TextView title = (TextView) findViewById(R.id.eventTitle);
         TextView description = (TextView) findViewById(R.id.eventDescription);
         TextView date = (TextView) findViewById(R.id.eventDate);
