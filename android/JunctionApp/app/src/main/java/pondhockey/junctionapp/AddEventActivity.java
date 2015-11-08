@@ -3,6 +3,7 @@ package pondhockey.junctionapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -107,11 +108,25 @@ public class AddEventActivity extends AppCompatActivity implements AdapterView.O
         String title = ((TextView) findViewById(R.id.titleTextBox)).getText().toString();
         String description = ((TextView) findViewById(R.id.descriptionTextBox)).getText().toString();
 
-        startDate.getCalendar().add(Calendar.HOUR_OF_DAY, startHours);
-        startDate.getCalendar().add(Calendar.MINUTE, startMinutes);
+        int year = getIntent().getExtras().getInt("YEAR");
+        int month = getIntent().getExtras().getInt("MONTH");
+        int day = getIntent().getExtras().getInt("DAY");
 
-        endDate.getCalendar().add(Calendar.HOUR_OF_DAY, endHours);
-        endDate.getCalendar().add(Calendar.MINUTE, endMinutes);
+        startDate.getCalendar().set(Calendar.HOUR_OF_DAY, startHours);
+        startDate.getCalendar().set(Calendar.MINUTE, startMinutes);
+
+        startDate.getCalendar().set(Calendar.YEAR, year);
+        startDate.getCalendar().set(Calendar.MONTH, month);
+        startDate.getCalendar().set(Calendar.DAY_OF_MONTH, day);
+
+        endDate.getCalendar().set(Calendar.YEAR, year);
+        endDate.getCalendar().set(Calendar.MONTH, month);
+        endDate.getCalendar().set(Calendar.DAY_OF_MONTH, day);
+
+        endDate.getCalendar().set(Calendar.HOUR_OF_DAY, endHours);
+        endDate.getCalendar().set(Calendar.MINUTE, endMinutes);
+
+
 
         Event newEvent = new Event(title, description, startDate, endDate, sportType, MapsActivity.markerLocation);
 

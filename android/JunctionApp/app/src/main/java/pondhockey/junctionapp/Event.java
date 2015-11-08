@@ -44,6 +44,15 @@ public class Event implements Serializable{
         this.location = location;
     }
 
+    public Event(String title, String description, SimpleDateFormat startDate, SimpleDateFormat endDate, int sportType, LatLng location) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.sportType = sportType;
+        this.location = location;
+    }
+
     /*
      * Participate (or unparticipate) to event
      */
