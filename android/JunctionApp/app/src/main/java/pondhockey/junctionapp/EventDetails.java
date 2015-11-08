@@ -53,8 +53,8 @@ public class EventDetails extends AppCompatActivity {
         String eventTime = "16:15-17:45";
         int eventParticipants = 10;
 
-        title.setText(event.title);
-        description.setText(event.description);
+        title.setText(event.getTitle());
+        description.setText(event.getDescription());
         date.setText(eventDate);
         time.setText(eventTime);
         participants.setText("People participating: " + String.valueOf(eventParticipants));

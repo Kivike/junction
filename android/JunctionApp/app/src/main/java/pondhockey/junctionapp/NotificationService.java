@@ -13,6 +13,9 @@ import android.util.Log;
 
 import android.os.Handler;
 
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +25,8 @@ public class NotificationService extends Service {
     int mStartMode;       // indicates how to behave if the service is killed
     IBinder mBinder;      // interface for clients that bind
     boolean mAllowRebind; // indicates whether onRebind should be used
+
+    private ArrayList<Event> lastUpdate = new ArrayList<Event>();
 
     @Override
     public void onCreate() {
@@ -44,10 +49,32 @@ public class NotificationService extends Service {
     }
 
     private void getEvents(){
-        HTTP.getInstance().getEvents("test");
+        ArrayList<Event> gottenEvents = HTTP.getInstance().getEvents("test");
+
+        for(int i = 0; i < gottenEvents.size() - lastUpdate.size(); i++){
+            //Create new notification
+            Event newEvent = gottenEvents.get(lastUpdate.size() + i);
+            String title = sportTypeToSport(newEvent.getSportType()) + " - " + newEvent.getTitle();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM.dd hh:mm");
+            String description = simpleDateFormat.format(newEvent.getStartDate().getCalendar().getTime()) + " - " + newEvent.getDescription();
+            createNotification(title, description);
+        }
+
+        lastUpdate = gottenEvents;
     }
 
-    private void createNotification(){
+    private String sportTypeToSport(int type){
+        switch(type){
+            case 0:return "Football";
+            case 1:return "Basketball";
+            case 2:return "Ice-Hockey";
+            case 3:return "Jogging";
+            case 4:return "Tennis";
+        }
+        return "";
+    }
+
+    private void createNotification(String title, String message){
         Notification notification = new Notification.Builder(this)
                // .setContentTitle("Test")
                // .setContentText("Hello World")
@@ -59,7 +86,7 @@ public class NotificationService extends Service {
 
         PendingIntent intent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        notification.setLatestEventInfo(this, "TITLE", "MESASE", intent);
+        notification.setLatestEventInfo(this, title, message, intent);
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
