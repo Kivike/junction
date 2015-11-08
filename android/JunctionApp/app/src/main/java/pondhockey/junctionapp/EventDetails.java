@@ -68,7 +68,7 @@ public class EventDetails extends AppCompatActivity {
     }
 
     private Event getSampleEvent() {
-        Event sample = new Event("Football", "Playing football", null, null);
+        Event sample = new Event("Football", "Playing football", null, null, 1, null);
         //sample.participate(true);
 
         return sample;

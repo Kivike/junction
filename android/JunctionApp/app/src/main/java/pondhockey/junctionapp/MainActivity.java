@@ -100,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Event> getSampleEvents() {
         ArrayList<Event> sampleEvents = new ArrayList<>();
-        sampleEvents.add(new Event("Football", "", null, null));
-        sampleEvents.add(new Event("Ice hockey", "", null, null));
-        sampleEvents.add(new Event("Running", "", null, null));
+        sampleEvents.add(new Event("Football", "", null, null, 1, null));
+        sampleEvents.add(new Event("Ice hockey", "", null, null, 1, null));
+        sampleEvents.add(new Event("Running", "", null, null, 1, null));
 
-        Event aaa = new Event("Floorball", "", null, null);
+        Event aaa = new Event("Floorball", "", null, null, 1, null);
         aaa.participate(true);
         sampleEvents.add(aaa);
 
