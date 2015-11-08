@@ -1,5 +1,7 @@
 package pondhockey.junctionapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +27,8 @@ public class EventDetails extends AppCompatActivity implements OnMapReadyCallbac
     GoogleMap mMap;
     LatLng eventLocation;
 
+    Intent resultIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +43,13 @@ public class EventDetails extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        resultIntent = new Intent();
+
         event = (Event) getIntent().getExtras().getSerializable("EVENT");
 
         setEventData(event);
+
+        resultIntent.putExtra("SIGNEDUP", event.isUserParticipating());
 
         Button backButton = (Button) findViewById(R.id.detailsBackButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +99,19 @@ public class EventDetails extends AppCompatActivity implements OnMapReadyCallbac
         if(event.isUserParticipating()) {
             participationButton.setText("Leave event");
             participationButton.setBackgroundColor(Color.parseColor("#733939"));
+
+            resultIntent.removeExtra("SIGNEDUP");
+            resultIntent.putExtra("SIGNEDUP", true);
+
+            setResult(Activity.RESULT_OK, resultIntent);
         } else {
             participationButton.setText("Sign up");
             participationButton.setBackgroundColor(Color.parseColor("#6d905f"));
+
+            resultIntent.removeExtra("SIGNEDUP");
+            resultIntent.putExtra("SIGNEDUP", false);
+
+            setResult(Activity.RESULT_OK, resultIntent);
         }
     }
 

@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Event> events;
     ArrayList<Event> filteredEvents;
 
+    Event focusedEvent;
+
     Button[] eventButtons;
 
     int selectedYear;
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         eventButtons = new Button[filteredEvents.size()];
 
         for(int i = 0; i < filteredEvents.size(); i++) {
-            Event event = filteredEvents.get(i);
+            final Event event = filteredEvents.get(i);
 
             eventButtons[i] = new Button(this);
             eventButtons[i].setHeight(70);
@@ -132,9 +134,10 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, EventDetails.class);
 
                     int eventIndex = (int) v.getTag();
+                    focusedEvent = filteredEvents.get(eventIndex);
 
                     intent.putExtra("EVENT", filteredEvents.get(eventIndex));
-                    startActivity(intent);
+                    startActivityForResult(intent, 0);
                 }
             });
 
@@ -199,6 +202,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Void... values) {
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if(requestCode == 0) {
+                boolean signed = data.getExtras().getBoolean("SIGNEDUP");
+                Log.e("res", String.valueOf(signed));
+                focusedEvent.participate(signed);
+                updateEventButtons();
+            }
         }
     }
 }
