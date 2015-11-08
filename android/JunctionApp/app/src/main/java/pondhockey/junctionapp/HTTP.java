@@ -181,8 +181,8 @@ public class HTTP{
 
                 int sportType = jsonEvent.getInt("type");
 
-                double lat = Double.parseDouble(jsonEvent.getString("location").split(" ")[0]);
-                double lng = Double.parseDouble(jsonEvent.getString("location").split(" ")[1]);
+                double lat = Double.parseDouble(jsonEvent.getString("location").split(" ")[0].replace(',', '.'));
+                double lng = Double.parseDouble(jsonEvent.getString("location").split(" ")[1].replace(',', '.'));
                 LatLng location = new LatLng(lat, lng);
 
                 Log.e("aa","¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤");
