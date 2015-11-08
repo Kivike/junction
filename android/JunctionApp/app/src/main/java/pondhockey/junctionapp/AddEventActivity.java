@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -126,9 +128,9 @@ public class AddEventActivity extends AppCompatActivity implements AdapterView.O
         endDate.getCalendar().set(Calendar.HOUR_OF_DAY, endHours);
         endDate.getCalendar().set(Calendar.MINUTE, endMinutes);
 
-
-
         Event newEvent = new Event(title, description, startDate, endDate, sportType, MapsActivity.markerLocation);
+
+        Toast.makeText(getApplicationContext(), "Created new event", Toast.LENGTH_LONG).show();
 
         // TODO: Send new event to server
         HTTP.getInstance().createEvent(newEvent);
@@ -163,8 +165,10 @@ public class AddEventActivity extends AppCompatActivity implements AdapterView.O
 
     private void updateStartTimeText() {
         TextView startTimeText = (TextView) findViewById(R.id.startTimeText);
-        startTimeText.setText(String.format("%d:%d", startHours, startMinutes));
-
+        DecimalFormat formatter = new DecimalFormat("00");
+        String formattedMinutes = formatter.format(endMinutes);
+        startTimeText.setText(String.format("%d:%s", startHours, formattedMinutes));
+        
         if(endHours < startHours || (endHours == startHours && endMinutes < startMinutes)) {
             endHours = startHours;
             endMinutes = startMinutes;
