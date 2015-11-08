@@ -4,13 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-public class AddEventActivity extends AppCompatActivity {
+public class AddEventActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     enum RequestCode {START_TIME, END_TIME, LOCATION }
 
     SimpleDateFormat startDate;
@@ -24,6 +29,8 @@ public class AddEventActivity extends AppCompatActivity {
 
     float latitude;
     float longitude;
+
+    private int sportType = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,28 @@ public class AddEventActivity extends AppCompatActivity {
             }
         });
 
+        Spinner spinner = (Spinner) findViewById(R.id.sport_spinner);
+
+        // Spinner click listener
+        spinner.setOnItemSelectedListener(this);
+
+        // Spinner Drop down elements
+        List<String> categories = new ArrayList<String>();
+        categories.add("Football");
+        categories.add("Basketball");
+        categories.add("Ice-Hockey");
+        categories.add("Jogging");
+        categories.add("Tennis");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spinner.setAdapter(dataAdapter);
+
         Button backButton = (Button) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +113,7 @@ public class AddEventActivity extends AppCompatActivity {
         endDate.getCalendar().add(Calendar.HOUR_OF_DAY, endHours);
         endDate.getCalendar().add(Calendar.MINUTE, endMinutes);
 
-        Event newEvent = new Event(title, description, startDate, endDate);
+        Event newEvent = new Event(title, description, startDate, endDate, sportType, MapsActivity.markerLocation);
 
         // TODO: Send new event to server
     }
@@ -104,6 +133,16 @@ public class AddEventActivity extends AppCompatActivity {
                 longitude = data.getExtras().getFloat("LONGITUDE");
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        sportType = position;
+    }
+
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
     }
 
     private void updateStartTimeText() {
