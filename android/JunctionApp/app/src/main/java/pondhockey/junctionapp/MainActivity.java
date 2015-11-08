@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
      * Find events and create buttons for them
      */
     private void getEvents() {
-        events = HTTP.getInstance().getEvents("test");
+        events = HTTP.getInstance().getEvents(MainActivity.android_id);
     }
 
     private void updateEventList(int year, int month, int dayOfMonth) {
