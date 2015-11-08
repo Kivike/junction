@@ -36,10 +36,15 @@ public class NotificationService extends Service {
         scheduler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                createNotification();
+                getEvents();
+                //createNotification();
             }
         }, 0, 10, TimeUnit.SECONDS);
         return mStartMode;
+    }
+
+    private void getEvents(){
+        HTTP.getInstance().getEvents("test");
     }
 
     private void createNotification(){

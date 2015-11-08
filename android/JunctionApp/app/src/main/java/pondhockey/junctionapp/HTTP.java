@@ -19,12 +19,14 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import org.json.*;
 
 public class HTTP{
 
@@ -143,17 +145,54 @@ public class HTTP{
         return sendHttpCall(httpPost);
     }
 
-    public String getEvents(String account){
+    public ArrayList<Event> getEvents(String account){
 
         HttpClient httpclient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://rope.myftp.org:8000/createEvent?" + account);
+        HttpGet httpGet = new HttpGet("http://rope.myftp.org:8000/events?account=" + account);
         try{
             HttpResponse response = httpclient.execute(httpGet);
             BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuilder responseBuilder = new StringBuilder();
+            String aux = "";
+
+            while((aux = in.readLine()) != null){
+                responseBuilder.append(aux);
+            }
+
             in.close();
 
-            String responseString = in.toString();
-            return responseString;
+            String responseString = responseBuilder.toString();
+
+            JSONArray jsonArray = new JSONArray(responseString);
+
+            ArrayList<Event> events = new ArrayList<Event>();
+
+            for(int i = 0; i < jsonArray.length(); i++){
+                JSONObject jsonEvent = jsonArray.getJSONObject(i);
+                String title = jsonEvent.getString("Title");
+                String description = jsonEvent.getString("Description");
+
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+                SimpleDateFormat startDate = new SimpleDateFormat();
+                SimpleDateFormat endDate = new SimpleDateFormat();
+                startDate.getCalendar().setTime(formatter.parse(jsonEvent.getString("Startingtime")));
+                endDate.getCalendar().setTime(formatter.parse(jsonEvent.getString("Endingtime")));
+
+                int sportType = jsonEvent.getInt("type");
+
+                double lat = Double.parseDouble(jsonEvent.getString("location").split(" ")[0]);
+                double lng = Double.parseDouble(jsonEvent.getString("location").split(" ")[1]);
+                LatLng location = new LatLng(lat, lng);
+
+                Log.e("aa","¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤");
+                Log.e("aa", title + " " + description + " " + startDate.getCalendar().getTime() + " " + endDate.getCalendar().getTime());
+                Log.e("aa", sportType + " " + location.latitude + " " + location.longitude);
+
+                events.add(new Event(title, description, startDate, endDate, sportType, location));
+            }
+
+            return events;
 
         }catch(Exception e) {
             Log.e("log_tag", "Error in http connection " + e.toString());
