@@ -49,6 +49,31 @@ app.post('/newuser', function(req, res){
   });
 });
 
+app.get('/checkuser', function(req, res){
+  pool.getConnection(function(err, connection) {
+    if(err){
+      res.status(500).send("Cannot currently access database. Try again in couple minutes");
+      console.log("Error getting connection from pool " + err);
+      return;
+    } 
+
+    var sql = "SELECT * FROM users WHERE account = " + connection.escape(req.query.account);
+    
+      connection.query(sql, function(err, results, fields) {
+        if(err){
+          console.log(err);
+          res.status(500).send("Invalid database query. Check fields and try again.");
+          return;
+        }
+        if(results.length() > 0){
+          res.send(true);
+        }else{
+          res.send(false);
+        }
+    connection.release();
+  });
+});
+
 app.post('/changelocation', function(req, res){
   pool.getConnection(function(err, connection){
     if(err){
